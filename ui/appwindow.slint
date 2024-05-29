@@ -1,0 +1,90 @@
+import { Button, VerticalBox, LineEdit } from "std-widgets.slint";
+
+
+export component AppWindow inherits Window {
+
+    in property <string> results: "";
+    in-out property <bool> opencurtain: false;
+    callback devide-income(string);
+
+
+    background: #313e50;
+    GridLayout {
+        padding: 50px;
+        spacing: 25px;
+        Row {
+            Text {
+                text: "Enter Total Income";
+                horizontal-alignment: center;
+                font-size: 24px;
+                font-weight: 900;
+            }
+        }
+
+        Row {
+            income := LineEdit {
+                font-size: 14px;
+                horizontal-alignment: center;
+                placeholder-text: "Enter your income";
+                height: 35px;
+            }
+        }
+
+        Row {
+            Button {
+                primary: true;
+                text: "calculate";
+                height: 35px;
+                clicked => {
+                    root.opencurtain = !root.opencurtain;
+                    devide-income(income.text);
+                }
+            }
+        }
+
+        Row{
+            VerticalBox {
+                Rectangle {
+                    height: 150px;
+                    background: #f2f2f2;
+
+                    Text {
+                        color: black;
+                        font-size: 16px;
+                        font-weight: 500;
+                        text: root.results;
+                    }
+
+                    // left rect
+                    Rectangle {
+                        background: #333333;
+                        x:0;
+                        width: opencurtain ? 0px: parent.width / 2;
+                        height: parent.height;
+                        animate width {
+                             duration: 250ms;
+                             easing: ease-in;
+                        }
+                    }
+
+                    // right rect
+                    Rectangle {
+                        background: #333333;
+                        x: opencurtain ? parent.width: parent.width / 2;
+                        width: opencurtain ? 0px: parent.width / 2;
+                        height: parent.height;
+                        animate width {
+                             duration: 250ms;
+                             easing: ease-in;
+                        }
+                        animate x {
+                            duration: 250ms;
+                            easing: ease-in;
+                       }
+                    }
+                    
+                }
+            }
+        }
+    }
+}
